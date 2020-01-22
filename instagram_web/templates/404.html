@@ -1,0 +1,13 @@
+{% extends '_layout.html' %}
+{% block title %}Page not found | {% endblock %}
+
+{% block content %}
+<img src="{{url_for('static', filename='images/404.jpg')}}" width="600" />
+<h1>Page not found</h1>
+<p>What you were looking for is just not there</p>
+<p>But don't worry !</p>
+<p>You can go somewhere nice, <a href="{{ url_for('home') }}">Click me !</a></p>
+<p>Or you can click the link on the navigation bar on top ! :)</p>
+
+
+{% endblock %}
