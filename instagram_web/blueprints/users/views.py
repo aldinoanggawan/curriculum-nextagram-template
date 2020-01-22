@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.user import User
-from flask_login import current_user
+from flask_login import current_user, login_user
 
 
 users_blueprint = Blueprint('users',
@@ -23,8 +23,9 @@ def create():
     create_user = User(username=username, email=email, password=password)
     
     if create_user.save():
-        flash(f"Successfully created an account. Continue sign in!")
-        return redirect(url_for('users.new'))
+        login_user(create_user)
+        flash(f"Successfully created an account")
+        return redirect(url_for('users.show', username=username))
     else:
         return render_template('users/new.html', errors=create_user.errors)
 
