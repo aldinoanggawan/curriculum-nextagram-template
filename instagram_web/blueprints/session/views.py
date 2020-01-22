@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, url_for, flash
+from flask import Blueprint, render_template, request, url_for, flash, redirect, session
 from models.user import User
 from werkzeug.security import check_password_hash
 
@@ -16,12 +16,20 @@ def new():
 @session_blueprint.route('/', methods=['POST'])
 def create():
     username = request.form.get('username')
-    #add the code to check if the user exist
-    user = User.get(username = username)
-    breakpoint()
+    user = User.get_or_none(User.username == username)
+    
+    if user == None:
+        flash(f"Wrong username")
+        return redirect(url_for('session.new'))
+    else:
+        password_to_check = request.form.get('password')
+        hashed_password = user.password
+        result = check_password_hash(hashed_password, password_to_check)
+        if result == True:
+            session["user_id"] = user.id
+            return redirect(url_for('home'))
+        else :
+            flash(f"Wrong password")
+            return redirect(url_for('session.new'))
 
-    password_to_check = request.form.get('password')
-    hashed_password = user.password
-    # breakpoint()
-    result = check_password_hash(hashed_password, password_to_check)
-
+    
