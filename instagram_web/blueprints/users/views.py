@@ -48,6 +48,9 @@ def index():
 def edit(id):
     if current_user.is_authenticated:
         return render_template('users/edit.html')
+    else:
+        flash(f"Access not allowed, please login")
+        return redirect(url_for('session.new'))
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
