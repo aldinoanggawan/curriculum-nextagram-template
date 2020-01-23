@@ -33,7 +33,7 @@ def create():
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
     if current_user.is_authenticated:
-        return render_template('users/show.html', username=username, id=current_user.id)
+        return render_template('users/show.html', username=current_user.username, id=current_user.id)
     else:
         flash(f"Please login to access profile page")
         return redirect(url_for('session.new'))
@@ -47,7 +47,7 @@ def index():
 @users_blueprint.route('/<id>/edit', methods=['GET'])
 def edit(id):
     if current_user.is_authenticated:
-        return render_template('users/edit.html')
+        return render_template('users/edit.html', id=id, username=current_user.username, email=current_user.email)
     else:
         flash(f"Access not allowed, please login")
         return redirect(url_for('session.new'))
@@ -55,4 +55,20 @@ def edit(id):
 
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
-    pass
+    user = User.get_by_id(id)
+
+    username_update = request.form.get('username_update')
+    email_update = request.form.get('email_update')
+    # breakpoint()
+    if current_user == user:
+        update_user = (User
+                        .update(username=username_update,
+                                email=email_update)
+                        .where(User.id == user.id))
+        update_user.execute()
+
+        flash(f"Updated successfully")
+        return redirect(url_for('users.show', username=current_user))
+    else:
+        flash(f"Unauthorized to perform this action. Login to continue")
+        return redirect(url_for('session.new'))
