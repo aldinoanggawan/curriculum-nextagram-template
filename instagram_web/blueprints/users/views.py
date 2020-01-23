@@ -33,7 +33,7 @@ def create():
 @users_blueprint.route('/<username>', methods=["GET"])
 def show(username):
     if current_user.is_authenticated:
-        return render_template('users/show.html', username=username)
+        return render_template('users/show.html', username=username, id=current_user.id)
     else:
         flash(f"Please login to access profile page")
         return redirect(url_for('session.new'))
@@ -46,7 +46,8 @@ def index():
 
 @users_blueprint.route('/<id>/edit', methods=['GET'])
 def edit(id):
-    pass
+    if current_user.is_authenticated:
+        return render_template('users/edit.html')
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
