@@ -14,6 +14,8 @@ app = Flask('NEXTAGRAM', root_path=web_dir)
 csrf = CSRFProtect(app)
 
 login_manager = LoginManager()
+login_manager.login_view = "session.new"
+login_manager.login_message = u"Please login"
 login_manager.init_app(app)
 
 

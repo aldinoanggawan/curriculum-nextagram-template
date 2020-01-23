@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.user import User
-from flask_login import current_user, login_user
+from flask_login import current_user, login_user, login_required
 
 
 users_blueprint = Blueprint('users',
@@ -31,12 +31,18 @@ def create():
 
 
 @users_blueprint.route('/<username>', methods=["GET"])
+@login_required
 def show(username):
-    if current_user.is_authenticated:
-        return render_template('users/show.html', username=current_user.username, id=current_user.id)
+    user = User.get_or_none(User.username == username)
+    if user:
+        return render_template('users/show.html', username=user.username, id=user.id)
     else:
-        flash(f"Please login to access profile page")
-        return redirect(url_for('session.new'))
+        return render_template('404.html')
+    # if current_user.is_authenticated:
+    #     return render_template('users/show.html', username=current_user.username, id=current_user.id)
+    # else:
+    #     flash(f"Please login to access profile page")
+    #     return redirect(url_for('session.new'))
 
 
 @users_blueprint.route('/', methods=["GET"])
@@ -68,7 +74,7 @@ def update(id):
         update_user.execute()
 
         flash(f"Updated successfully")
-        return redirect(url_for('users.show', username=current_user))
+        return redirect(url_for('users.show', username=current_user.username))
     else:
         flash(f"Unauthorized to perform this action. Login to continue")
         return redirect(url_for('session.new'))
