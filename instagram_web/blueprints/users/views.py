@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 from instagram_web.util.helpers import upload_file_to_s3
 
 
+
 users_blueprint = Blueprint('users',
                             __name__,
                             template_folder='templates')
@@ -55,7 +56,7 @@ def index():
 @users_blueprint.route('/<id>/edit', methods=['GET'])
 def edit(id):
     if current_user.is_authenticated:
-        return render_template('users/edit.html', id=id, username=current_user.username, email=current_user.email)
+        return render_template('users/edit.html', id=id, username=current_user.username, email=current_user.email, profile_image_url=current_user.profile_image_url)
     else:
         flash(f"Access not allowed, please login")
         return redirect(url_for('session.new'))

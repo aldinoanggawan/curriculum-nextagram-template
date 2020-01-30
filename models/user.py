@@ -3,6 +3,8 @@ import peewee as pw
 import re
 from werkzeug.security import generate_password_hash
 from flask_login import UserMixin
+import os
+from playhouse.hybrid import hybrid_property
 
 
 class User(UserMixin, BaseModel):
@@ -29,3 +31,7 @@ class User(UserMixin, BaseModel):
             self.errors.append("Password should have at least one special character")
         else:
             self.password = generate_password_hash(password_input)
+
+    @hybrid_property
+    def profile_image_url(self):
+        return os.environ.get("S3_LOCATION") + self.profile_image_path
