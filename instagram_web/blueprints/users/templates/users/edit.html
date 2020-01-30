@@ -2,6 +2,7 @@
 {% block title %}Edit Profile | {% endblock %}
 
 {% block content %}
+{% include '_validation_errors.html' %}
 <h1>Edit Profile</h1>
 <form action="{{ url_for('users.update', id=id) }}" method="POST">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -16,4 +17,20 @@
 
     <button type="submit" class="btn btn-primary">Update Profile</button>
 </form>
+<br>
+<br>
+<h2>Upload Profile Image</h2>
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src="..." alt="Card image cap">
+    <div class="card-body">
+        <form action="{{ url_for('upload.create', id=id) }}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="file" name="profile_img_file">
+            <br>
+            <br>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+    </div>
+</div>
+
 {% endblock %}
