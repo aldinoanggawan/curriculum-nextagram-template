@@ -4,7 +4,8 @@
 {% block content %}
 {% include '_validation_errors.html' %}
 
-<h1>Hello {{ username }}!</h1>
+<h3>@{{ username }}</h3>
+<img src="{{ profile_image_url }}" width="200" />
 
 <form action="{{ url_for('users.edit', id=id) }}">
 <button type="submit" class="btn btn-primary">Edit Profile</button>

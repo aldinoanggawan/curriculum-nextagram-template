@@ -38,7 +38,7 @@ def create():
 def show(username):
     user = User.get_or_none(User.username == username)
     if user:
-        return render_template('users/show.html', username=user.username, id=user.id)
+        return render_template('users/show.html', username=user.username, id=user.id, profile_image_url=current_user.profile_image_url)
     else:
         return render_template('404.html')
     # if current_user.is_authenticated:
