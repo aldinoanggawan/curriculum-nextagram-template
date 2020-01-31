@@ -42,7 +42,7 @@
         <img class="card-img-top" src="{{ post.post_image_url }}" alt="Card image cap">
         <div class="card-body">
             <p class="card-text">Put the caption over here</p>
-            <a href="#" class="btn btn-primary">Endorse</a>
+            <a href="{{ url_for('endorsement.new', post_id=post.id)}}" class="btn btn-primary">Endorse</a>
         </div>
     </div>
 {% endfor %}
