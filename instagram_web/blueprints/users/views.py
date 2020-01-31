@@ -4,6 +4,7 @@ from flask_login import current_user, login_user, login_required
 from werkzeug.utils import secure_filename
 from instagram_web.util.helpers import upload_file_to_s3
 from models.post import Post
+from models.endorsement import Endorsement
 
 
 

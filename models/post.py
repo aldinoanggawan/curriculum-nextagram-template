@@ -16,6 +16,9 @@ class Post(BaseModel):
     def validate(self):
         pass
 
+    def get_total_amount(self):
+        return sum([e.amount for e in self.endorsements])
+    
     @hybrid_property
     def post_image_url(self):
         return os.environ.get("S3_LOCATION") + self.image_path

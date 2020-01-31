@@ -11,11 +11,7 @@
 <button type="submit" class="btn btn-primary">Edit Profile</button>
 </form>
 <br>
-<br>
 <hr>
-<hr>
-<br>
-<br>
 <div class="card" style="width: 18rem;">
     <div class="card-body">
         <h4>Upload image to your feed</h4>
@@ -29,11 +25,7 @@
     </div>
 </div>
 <br>
-<br>
 <hr>
-<hr>
-<br>
-<br>
 <h1>FEED</h1>
 <br>
 <div class="card-deck">
@@ -44,6 +36,7 @@
             <p class="card-text">Put the caption over here</p>
             <a href="{{ url_for('endorsement.new', post_id=post.id)}}" class="btn btn-primary">Endorse</a>
         </div>
+        <div class="card-footer">Made ${{ post.get_total_amount() }}</div>
     </div>
 {% endfor %}
 </div>
