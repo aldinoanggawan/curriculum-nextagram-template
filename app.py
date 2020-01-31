@@ -5,6 +5,7 @@ from models.base_model import db
 from models.user import User
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
+import braintree
 
 web_dir = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'instagram_web')
@@ -23,6 +24,16 @@ if os.getenv('FLASK_ENV') == 'production':
     app.config.from_object("config.ProductionConfig")
 else:
     app.config.from_object("config.DevelopmentConfig")
+
+
+gateway = braintree.BraintreeGateway(
+    braintree.Configuration(
+        braintree.Environment.Sandbox,
+        merchant_id=os.environ.get('BRAINTREE_MERCHANT_ID'),
+        public_key=os.environ.get('BRAINTREE_PUBLIC_KEY'),
+        private_key=os.environ.get('BRAINTREE_PRIVATE_KEY')
+    )
+)
 
 
 @app.before_request
