@@ -3,6 +3,7 @@ from models.user import User
 from flask_login import current_user, login_user, login_required
 from werkzeug.utils import secure_filename
 from instagram_web.util.helpers import upload_file_to_s3
+from models.post import Post
 
 
 
@@ -37,8 +38,9 @@ def create():
 @login_required
 def show(username):
     user = User.get_or_none(User.username == username)
+    u = User.get_by_id(current_user.id)
     if user:
-        return render_template('users/show.html', username=user.username, id=user.id, profile_image_url=current_user.profile_image_url)
+        return render_template('users/show.html', user=user, user_posts=u.posts)
     else:
         return render_template('404.html')
     # if current_user.is_authenticated:

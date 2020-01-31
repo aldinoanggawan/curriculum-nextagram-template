@@ -1,14 +1,50 @@
 {% extends '_layout.html' %}
-{% block title %}{{ username }}' page | {% endblock %}
+{% block title %}{{ user.username }}' page | {% endblock %}
 
 {% block content %}
 {% include '_validation_errors.html' %}
 
-<h3>@{{ username }}</h3>
-<img src="{{ profile_image_url }}" width="200" />
+<h3>@{{ user.username }}</h3>
+<img src="{{ user.profile_image_url }}" width="200" />
 
-<form action="{{ url_for('users.edit', id=id) }}">
+<form action="{{ url_for('users.edit', id=user.id) }}">
 <button type="submit" class="btn btn-primary">Edit Profile</button>
 </form>
-
+<br>
+<br>
+<hr>
+<hr>
+<br>
+<br>
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h4>Upload image to your feed</h4>
+        <form action="{{ url_for('post.create') }}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="file" name="post_img_file">
+            <br>
+            <br>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+    </div>
+</div>
+<br>
+<br>
+<hr>
+<hr>
+<br>
+<br>
+<h1>FEED</h1>
+<br>
+<div class="card-deck">
+{% for post in user_posts %}
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="{{ post.post_image_url }}" alt="Card image cap">
+        <div class="card-body">
+            <p class="card-text">Put the caption over here</p>
+            <a href="#" class="btn btn-primary">Endorse</a>
+        </div>
+    </div>
+{% endfor %}
+</div>
 {% endblock %}
