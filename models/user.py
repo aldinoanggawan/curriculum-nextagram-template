@@ -36,7 +36,7 @@ class User(UserMixin, BaseModel):
     def follow(self, following):
         from models.record import Record
         # check if relationship is in database
-        if self.follow_status==None:
+        if self.follow_status(following)==None:
             # check if the followed user is private
             if self.is_private == True:
                 return Record(follower=self.id, following=following.id, approved=False).save()

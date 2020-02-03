@@ -9,10 +9,14 @@ record_blueprint = Blueprint('record',
                             template_folder='templates')
 
 
-@record_blueprint.route('/<following_id>', methods=['POST'])
+@record_blueprint.route('/<following_id>')
 def create(following_id):
     following = User.get_by_id(following_id)
     
     if current_user.follow(following):
         flash(f"You have followed {following.username}")
         return redirect(url_for('users.show', username=following.username))
+    else:
+        flash(f"An error occured, please try again later")
+        return redirect(url_for('users.show', username=following.username))
+        
