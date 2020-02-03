@@ -19,5 +19,11 @@
 
     <button type="submit" class="btn btn-primary">Sign In</button>
 </form>
-
+<br>
+<hr>
+<br>
+<form action="{{ url_for('session.google_login') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="btn btn-success">Sign in with Google</button>
+</form>
 {% endblock %}

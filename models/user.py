@@ -34,4 +34,7 @@ class User(UserMixin, BaseModel):
 
     @hybrid_property
     def profile_image_url(self):
-        return os.environ.get("S3_LOCATION") + self.profile_image_path
+        if self.profile_image_path:
+            return os.environ.get("S3_LOCATION") + self.profile_image_path
+        else:
+            return os.environ.get("S3_LOCATION") + 'default.png'

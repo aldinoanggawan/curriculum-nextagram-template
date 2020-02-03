@@ -1,5 +1,5 @@
 {% extends '_layout.html' %}
-{% block title %}{{ user.username }}' page | {% endblock %}
+{% block title %}{{ user.username }}'s page | {% endblock %}
 
 {% block content %}
 {% include '_validation_errors.html' %}
@@ -36,7 +36,7 @@
             <p class="card-text">Put the caption over here</p>
             <a href="{{ url_for('endorsement.new', post_id=post.id)}}" class="btn btn-primary">Endorse</a>
         </div>
-        <div class="card-footer">Made ${{ post.get_total_amount() }}</div>
+        <div class="card-footer">Made: <span class="text-danger">${{ post.get_total_amount() }}</span></div>
     </div>
 {% endfor %}
 </div>

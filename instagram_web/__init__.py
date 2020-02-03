@@ -7,9 +7,14 @@ from instagram_web.blueprints.post.views import post_blueprint
 from instagram_web.blueprints.endorsement.views import endorsement_blueprint
 from flask_assets import Environment, Bundle
 from .util.assets import bundles
+import os
+from instagram_web.util.google_oauth import oauth
+import config
 
 assets = Environment(app)
 assets.register(bundles)
+
+oauth.init_app(app)
 
 app.register_blueprint(users_blueprint, url_prefix="/users")
 app.register_blueprint(session_blueprint, url_prefix="/session")
