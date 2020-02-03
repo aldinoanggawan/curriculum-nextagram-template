@@ -3,6 +3,7 @@ from models.user import User
 from werkzeug.security import check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from instagram_web.util.google_oauth import oauth
+from config import Config
 
 session_blueprint = Blueprint('session',
                                 __name__,
@@ -11,7 +12,8 @@ session_blueprint = Blueprint('session',
 
 @session_blueprint.route('/new', methods=['GET'])
 def new():
-    return render_template('session/new.html')
+    client_id = Config.GOOGLE_CLIENT_ID
+    return render_template('session/new.html', client_id=client_id)
 
 
 @session_blueprint.route('/', methods=['POST'])
@@ -59,5 +61,5 @@ def authorize():
         flash(f"You have successfully logged in")
         return redirect('/')
     else:
-        flash(f"Login failed, please try again")
+        flash(f"Login failed, please create an account to proceed")
         return redirect(url_for('session.new'))

@@ -12,6 +12,7 @@ class User(UserMixin, BaseModel):
     email = pw.CharField(unique=True)
     password = pw.CharField(unique=False)
     profile_image_path = pw.CharField(unique=False, null=True)
+    is_private = pw.BooleanField(default=False)
 
     def validate(self):
         duplicate_username = User.get_or_none(User.username == self.username)
@@ -32,9 +33,28 @@ class User(UserMixin, BaseModel):
         else:
             self.password = generate_password_hash(password_input)
 
+    def follow(self, following):
+        from models.record import Record
+        # check if relationship is in database
+        if self.follow_status==None:
+            # check if the followed user is private
+            if self.is_private == True:
+                return Record(follower=self.id, following=following.id, approved=False).save()
+            else:
+                return Record(follower=self.id, following=following.id, approved=True).save()
+        else:
+            return 0
+
+    def follow_status(self, following):
+        from models.record import Record
+        return Record.get_or_none(Record.follower==self.id, Record.following==following.id)
+
     @hybrid_property
     def profile_image_url(self):
         if self.profile_image_path:
             return os.environ.get("S3_LOCATION") + self.profile_image_path
         else:
             return os.environ.get("S3_LOCATION") + 'default.png'
+
+
+

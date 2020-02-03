@@ -39,9 +39,9 @@ def create():
 @login_required
 def show(username):
     user = User.get_or_none(User.username == username)
-    u = User.get_by_id(current_user.id)
+    # u = User.get_by_id(current_user.id) ## no need to use this
     if user:
-        return render_template('users/show.html', user=user, user_posts=u.posts)
+        return render_template('users/show.html', user=user)
     else:
         return render_template('404.html')
     # if current_user.is_authenticated:

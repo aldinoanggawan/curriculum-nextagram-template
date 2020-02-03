@@ -2,6 +2,10 @@
 {% block title %} Sign In | {% endblock %}
 
 {% block content %}
+<head>
+    <meta name="google-signin-client_id" content="{{ client_id }}.apps.googleusercontent.com">
+</head>
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 {% include '_validation_errors.html' %}
 
 <h1>Sign In</h1>
@@ -22,8 +26,32 @@
 <br>
 <hr>
 <br>
+
+
 <form action="{{ url_for('session.google_login') }}">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <button type="submit" class="btn btn-success">Sign in with Google</button>
 </form>
+<br>
+<div id="my-signin2"></div>
+
+<script>
+    function onSuccess(googleUser) {
+      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+    }
+    function onFailure(error) {
+      console.log(error);
+    }
+    function renderButton() {
+      gapi.signin2.render('my-signin2', {
+        'scope': 'profile email',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+      });
+    }
+  </script>
 {% endblock %}

@@ -6,38 +6,50 @@
 
 <h3>@{{ user.username }}</h3>
 <img src="{{ user.profile_image_url }}" width="200" />
-
-<form action="{{ url_for('users.edit', id=user.id) }}">
-<button type="submit" class="btn btn-primary">Edit Profile</button>
-</form>
 <br>
-<hr>
-<div class="card" style="width: 18rem;">
-    <div class="card-body">
-        <h4>Upload image to your feed</h4>
-        <form action="{{ url_for('post.create') }}" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <input type="file" name="post_img_file">
-            <br>
-            <br>
-            <button type="submit" class="btn btn-primary">Upload</button>
-        </form>
+{% if current_user != user %}
+    {% if current_user.follow_status(user) %}
+        {% if current_user.follow_status(user).approved %}
+            <a href="#" class="btn btn-outline-dark">Following</a>
+        {% else %}
+            <a href="#" class="btn btn-outline-dark">Requested</a>
+        {% endif %}
+    {% else %}
+        <a href="{{ url_for('record.create', following_id=user.id) }}">Follow</a>
+    {% endif %}
+{% else %}
+    <a href="{{ url_for('users.edit', id=user.id) }}" class="btn btn-primary">Edit Profile</a>
+    <br>
+    <hr>
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h4>Upload image to your feed</h4>
+            <form action="{{ url_for('post.create') }}" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="file" name="post_img_file">
+                <br>
+                <br>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
     </div>
-</div>
-<br>
-<hr>
+    <br>
+    <hr>
+{% endif %}
+
 <h1>FEED</h1>
 <br>
 <div class="card-deck">
-{% for post in user_posts %}
+{% for post in user.posts %}
     <div class="card" style="width: 18rem;">
         <img class="card-img-top" src="{{ post.post_image_url }}" alt="Card image cap">
         <div class="card-body">
             <p class="card-text">Put the caption over here</p>
+            {% if current_user != user %}
             <a href="{{ url_for('endorsement.new', post_id=post.id)}}" class="btn btn-primary">Endorse</a>
+            {% endif %}
         </div>
         <div class="card-footer">Made: <span class="text-danger">${{ post.get_total_amount() }}</span></div>
     </div>
 {% endfor %}
-</div>
 {% endblock %}
