@@ -39,7 +39,7 @@
 
 <h1>FEED</h1>
 <br>
-{% if current_user.follow_status(user).approved %}
+{% if current_user==user or user.is_private==False or current_user.follow_status(user).approved %}
     <div class="card-deck">
         {% for post in user.posts %}
         <div class="card" style="width: 18rem;">
