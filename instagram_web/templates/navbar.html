@@ -7,6 +7,25 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ url_for('users.show', username=current_user.username) }}">My Profile</a>
         </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Follow Request
+            </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {% for request in current_user.get_request %}
+                    <div class="dropdown-item" href="#">
+                        <img src="{{request.follower.profile_image_url}}" width="40" height="40"/>
+                        <a>{{request.follower.username}}</a>
+                        <form>
+                            <input type="submit" class="btn btn-success" value="Confirm"/>
+                        </form>
+                        <form action="{{ url_for('record.destroy', follower_id=request.follower.id) }}">
+                            <input type="submit" class="btn btn-danger " value="Remove" />
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+        </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ url_for('session.destroy') }}">Sign Out</a>
         </li>
@@ -18,16 +37,5 @@
             <a class="nav-link" href="{{ url_for('users.new') }}">Sign Up</a>
         </li>
         {% endif %}
-        <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Follow Request
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">
-               action
-            </a>
-            <a class="dropdown-item" href="#">Another action</a>
-          </div>
-        </li>
     </div>
 </nav>

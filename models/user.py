@@ -55,6 +55,11 @@ class User(UserMixin, BaseModel):
 
 
     @hybrid_property
+    def get_request(self):
+        from models.record import Record
+        return Record.select().where(Record.following==self.id, Record.approved==False)
+
+    @hybrid_property
     def profile_image_url(self):
         if self.profile_image_path:
             return os.environ.get("S3_LOCATION") + self.profile_image_path

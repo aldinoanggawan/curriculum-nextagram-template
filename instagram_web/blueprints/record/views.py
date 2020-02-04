@@ -20,6 +20,18 @@ def create(following_id):
         flash(f"An error occured, please try again later")
         return redirect(url_for('users.show', username=following.username))
 
+
+@record_blueprint.route('/<follower_id>/delete')
+def destroy(follower_id):
+    follower = User.get_by_id(follower_id)
+
+    if current_user.unfollow(follower):
+        flash(f"You have removed friend request from {follower.username}")
+        return redirect(url_for('users.show', username=current_user.username))
+    else:
+        flash(f"An error occured, please try again later")
+        return redirect(url_for('users.show', username=current_user.username))
+
 @record_blueprint.route('/<following_id>/unfollow')
 def unfollow(following_id):
     following = User.get_by_id(following_id)
