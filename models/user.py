@@ -45,9 +45,14 @@ class User(UserMixin, BaseModel):
         else:
             return 0
 
+    def unfollow(self, following):
+        from models.record import Record
+        return Record.delete().where(Record.follower==self.id, Record.following==following.id).execute()
+
     def follow_status(self, following):
         from models.record import Record
         return Record.get_or_none(Record.follower==self.id, Record.following==following.id)
+
 
     @hybrid_property
     def profile_image_url(self):

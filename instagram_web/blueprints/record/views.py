@@ -19,4 +19,14 @@ def create(following_id):
     else:
         flash(f"An error occured, please try again later")
         return redirect(url_for('users.show', username=following.username))
-        
+
+@record_blueprint.route('/<following_id>/unfollow')
+def unfollow(following_id):
+    following = User.get_by_id(following_id)
+    
+    if current_user.unfollow(following):
+        flash(f"You have unfollowed {following.username}")
+        return redirect(url_for('users.show', username=following.username))
+    else:
+        flash(f"An error occured, please try again later")
+        return redirect(url_for('users.show', username=following.username))

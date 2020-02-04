@@ -10,7 +10,7 @@
 {% if current_user != user %}
     {% if current_user.follow_status(user) %}
         {% if current_user.follow_status(user).approved %}
-            <a href="#" class="btn btn-outline-dark">Following</a>
+            <a href="{{ url_for('record.unfollow', following_id=user.id) }}" class="btn btn-outline-dark">Unfollow</a>
         {% else %}
             <a href="#" class="btn btn-outline-dark">Requested</a>
         {% endif %}
