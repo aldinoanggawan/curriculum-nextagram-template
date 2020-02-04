@@ -38,7 +38,7 @@ class User(UserMixin, BaseModel):
         # check if relationship is in database
         if self.follow_status(following)==None:
             # check if the followed user is private
-            if self.is_private == True:
+            if following.is_private == True:
                 return Record(follower=self.id, following=following.id, approved=False).save()
             else:
                 return Record(follower=self.id, following=following.id, approved=True).save()

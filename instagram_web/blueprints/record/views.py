@@ -14,7 +14,7 @@ def create(following_id):
     following = User.get_by_id(following_id)
     
     if current_user.follow(following):
-        flash(f"You have followed {following.username}")
+        flash(f"You have sent a request to {following.username}")
         return redirect(url_for('users.show', username=following.username))
     else:
         flash(f"An error occured, please try again later")
